@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Vicente - Book Mode con Filtro</title>
+    <title>Catálogo Vicente - Modo Libro</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #1a1a1a; color: #fff; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 10px; }
@@ -60,7 +60,7 @@
 </head>
 <body>
 
-<!-- NUEVO: Menú de Selección Rápida en la parte superior -->
+<!-- Menú de Selección Rápida Superior -->
 <div class="top-navbar">
     <button class="nav-tab active" id="tab-inicio" onclick="irASeccion(0, 'inicio')">Inicio</button>
     <button class="nav-tab" id="tab-zapatos" onclick="irASeccion(1, 'zapatos')">Zapatos</button>
@@ -73,7 +73,8 @@
     <!-- HOJA 0: LA PORTADA -->
     <div class="page active-z" id="page0">
         <div class="page-front cover-front">
-            <img src="img/logo_vicente.png" alt="Logo Vicente" onerror="this.src='https://via.placeholder.com/150x150?text=LOGO+VICENTE'">
+            <!-- Lee directamente "portada.jpg" que tienes en la raíz -->
+            <img src="portada.jpg" alt="Logo Vicente" onerror="this.src='https://via.placeholder.com/150x150?text=Vicente'">
             <h1>Vicente</h1>
             <p>Desliza para abrir el catálogo</p>
         </div>
@@ -124,15 +125,18 @@
 </div>
 
 <script>
-    // Generador automático de fotos por nombre
+    // CORREGIDO: Busca las fotos sueltas en la raíz sin la carpeta 'img/'
     function generarFotosLibro(idContenedor, prefijo, inicio, fin) {
         const contenedor = document.getElementById(idContenedor);
         for (let i = inicio; i <= fin; i++) {
             const card = document.createElement('div');
             card.className = 'product-card';
             const img = document.createElement('img');
-            img.src = `img/${prefijo}${i}.jpg`;
+            
+            // Ruta corregida para buscar en la raíz directamente
+            img.src = `${prefijo}${i}.jpg`; 
             img.alt = `${prefijo} ${i}`;
+            
             img.onerror = function() { card.style.display = 'none'; };
             const p = document.createElement('p');
             p.innerText = `Ref: ${prefijo.toUpperCase()}-${i}`;
@@ -143,16 +147,19 @@
     }
 
     window.onload = function() {
-        generarFotosLibro('grid-zapatos-1', 'zapato', 1, 25);
-        generarFotosLibro('grid-zapatos-2', 'zapato', 26, 50);
+        // CORREGIDO: Ahora busca "zapatos" con S en plural para enlazar con tu archivo zapatos1.jpg
+        generarFotosLibro('grid-zapatos-1', 'zapatos', 1, 25);
+        generarFotosLibro('grid-zapatos-2', 'zapatos', 26, 50);
+        
         generarFotosLibro('grid-conjuntos-1', 'conjunto', 1, 25);
         generarFotosLibro('grid-conjuntos-2', 'conjunto', 26, 50);
+        
         generarFotosLibro('grid-gym-1', 'gym', 1, 25);
         generarFotosLibro('grid-gym-2', 'gym', 26, 50);
+        
         actualizarPestañasMenu();
     };
 
-    // Control de las Hojas del Libro
     let currentSheet = 0; 
     const totalSheets = 3; 
 
@@ -186,13 +193,10 @@
         }
     }
 
-    // NUEVA FUNCIÓN: Salto directo desde el menú de arriba
     function irASeccion(hojaDestino, idTab) {
-        // Cambiar el diseño del botón activo arriba
         document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
         document.getElementById(`tab-${idTab}`).classList.add('active');
 
-        // Si el usuario quiere ir más adelante de donde está
         while (currentSheet < hojaDestino) {
             const sheet = document.getElementById(`page${currentSheet}`);
             sheet.classList.add('flipped');
@@ -201,7 +205,6 @@
             currentSheet++;
         }
         
-        // Si el usuario quiere regresar a páginas de atrás
         while (currentSheet > hojaDestino) {
             const oldSheet = document.getElementById(`page${currentSheet}`);
             if (oldSheet) oldSheet.classList.remove('active-z');
@@ -211,12 +214,10 @@
             sheet.classList.remove('low-z');
         }
 
-        // Asegurar que la hoja final quede arriba de todas visualmente
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-z'));
         document.getElementById(`page${currentSheet}`).classList.add('active-z');
     }
 
-    // Sincroniza las pestañas de arriba cuando usas los botones de abajo o deslizas el dedo
     function actualizarPestañasMenu() {
         document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
         if (currentSheet === 0) document.getElementById('tab-inicio').classList.add('active');
@@ -225,7 +226,6 @@
         if (currentSheet === 3) document.getElementById('tab-gym').classList.add('active');
     }
 
-    // Soporte Táctil para Celulares Android
     let touchStartX = 0;
     let touchEndX = 0;
     const book = document.querySelector('.book-container');
