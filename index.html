@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Vicente - Modo Libro</title>
+    <title>Catálogo Vicente</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #1a1a1a; color: #fff; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 10px; }
 
-        /* Barra de navegación superior fija */
+        /* Barra de navegación superior */
         .top-navbar { width: 95%; max-width: 450px; display: flex; justify-content: space-around; background: #222; padding: 10px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); margin-bottom: 15px; border: 1px solid #333; z-index: 1000; }
         .nav-tab { background: none; border: none; color: #aaa; font-size: 14px; font-weight: bold; padding: 8px 16px; cursor: pointer; border-radius: 20px; transition: 0.3s; }
         .nav-tab.active { background: #ff4757; color: white; box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4); }
@@ -16,26 +16,22 @@
         /* Contenedor Principal del Libro */
         .book-container { width: 95%; max-width: 450px; height: 75vh; perspective: 1500px; position: relative; }
 
-        /* Estructura de la Página (Hoja) */
+        /* Estructura de la Página */
         .page { width: 100%; height: 100%; position: absolute; top: 0; left: 0; transform-style: preserve-3d; transform-origin: left center; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1; pointer-events: none; }
-        
-        /* Capas internas de la página (Frente y Vuelta) */
         .page-front, .page-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: #222; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 20px; display: flex; flex-direction: column; pointer-events: auto; border: 1px solid #333; }
-        
         .page-back { transform: rotateY(180deg); background: #292929; }
 
         /* Estilos Portada */
         .cover-front { background-color: #111; border: 2px solid #333; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; }
-        .cover-front img { width: 140px; height: 140px; object-fit: contain; border-radius: 50%; background-color: #fff; padding: 10px; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); margin-bottom: 20px; }
-        .cover-front h1 { font-size: 36px; color: #fff; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; }
+        .cover-front img { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 3px solid #ff4757; margin-bottom: 20px; }
+        .cover-front h1 { font-size: 32px; color: #fff; text-transform: uppercase; letter-spacing: 3px; font-weight: 900; }
         .cover-front p { color: #888; font-size: 14px; margin-top: 10px; }
 
-        /* Estados del volteo de página */
+        /* Estados del volteo */
         .page.flipped { transform: rotateY(-180deg); }
         .page.active-z { z-index: 10; }
         .page.low-z { z-index: 0; }
 
-        /* Encabezados de páginas */
         .page h2 { text-align: center; color: #ff4757; font-size: 22px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #333; padding-bottom: 8px; }
 
         /* Grid de Fotos */
@@ -48,19 +44,16 @@
         .product-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 6px; background: #333; }
         .product-card p { font-size: 11px; margin-top: 5px; color: #aaa; font-weight: bold; }
 
-        /* Controles de navegación inferiores */
+        /* Controles */
         .nav-controls { display: flex; gap: 20px; margin-top: 15px; z-index: 100; margin-bottom: 10px; }
         .nav-btn { background: #ff4757; color: white; border: none; padding: 10px 22px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); transition: 0.2s; font-size: 14px; }
-        .nav-btn:active { transform: scale(0.95); }
 
-        /* Sombras del lomo del libro */
         .page-front::after { content: ''; position: absolute; left: 0; top: 0; width: 15px; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.3), transparent); }
         .page-back::after { content: ''; position: absolute; right: 0; top: 0; width: 15px; height: 100%; background: linear-gradient(to left, rgba(0,0,0,0.3), transparent); }
     </style>
 </head>
 <body>
 
-<!-- Menú de Selección Rápida Superior -->
 <div class="top-navbar">
     <button class="nav-tab active" id="tab-inicio" onclick="irASeccion(0, 'inicio')">Inicio</button>
     <button class="nav-tab" id="tab-zapatos" onclick="irASeccion(1, 'zapatos')">Zapatos</button>
@@ -73,10 +66,9 @@
     <!-- HOJA 0: LA PORTADA -->
     <div class="page active-z" id="page0">
         <div class="page-front cover-front">
-            <!-- Lee directamente "portada.jpg" que tienes en la raíz -->
-            <img src="portada.jpg" alt="Logo Vicente" onerror="this.src='https://via.placeholder.com/150x150?text=Vicente'">
+            <img src="portada.jpg" alt="Portada">
             <h1>Vicente</h1>
-            <p>Desliza para abrir el catálogo</p>
+            <p>Desliza o dale a Siguiente</p>
         </div>
         <div class="page-back"></div>
     </div>
@@ -84,11 +76,11 @@
     <!-- HOJA 1: ZAPATOS -->
     <div class="page" id="page1">
         <div class="page-front">
-            <h2>Zapatos (Parte 1)</h2>
+            <h2>Zapatos 1</h2>
             <div class="gallery-grid" id="grid-zapatos-1"></div>
         </div>
         <div class="page-back">
-            <h2>Zapatos (Parte 2)</h2>
+            <h2>Zapatos 2</h2>
             <div class="gallery-grid" id="grid-zapatos-2"></div>
         </div>
     </div>
@@ -96,11 +88,11 @@
     <!-- HOJA 2: CONJUNTOS -->
     <div class="page" id="page2">
         <div class="page-front">
-            <h2>Conjuntos (Parte 1)</h2>
+            <h2>Conjuntos 1</h2>
             <div class="gallery-grid" id="grid-conjuntos-1"></div>
         </div>
         <div class="page-back">
-            <h2>Conjuntos (Parte 2)</h2>
+            <h2>Conjuntos 2</h2>
             <div class="gallery-grid" id="grid-conjuntos-2"></div>
         </div>
     </div>
@@ -108,11 +100,11 @@
     <!-- HOJA 3: GYM -->
     <div class="page" id="page3">
         <div class="page-front">
-            <h2>Ropa Gym (Parte 1)</h2>
+            <h2>Ropa Gym 1</h2>
             <div class="gallery-grid" id="grid-gym-1"></div>
         </div>
         <div class="page-back">
-            <h2>Ropa Gym (Parte 2)</h2>
+            <h2>Ropa Gym 2</h2>
             <div class="gallery-grid" id="grid-gym-2"></div>
         </div>
     </div>
@@ -125,21 +117,21 @@
 </div>
 
 <script>
-    // CORREGIDO: Busca las fotos sueltas en la raíz sin la carpeta 'img/'
+    // ARREGLADO: Concatenación clásica con "+" limpia para teléfonos
     function generarFotosLibro(idContenedor, prefijo, inicio, fin) {
-        const contenedor = document.getElementById(idContenedor);
-        for (let i = inicio; i <= fin; i++) {
-            const card = document.createElement('div');
+        var contenedor = document.getElementById(idContenedor);
+        for (var i = inicio; i <= fin; i++) {
+            var card = document.createElement('div');
             card.className = 'product-card';
-            const img = document.createElement('img');
+            var img = document.createElement('img');
             
-            // Ruta corregida para buscar en la raíz directamente
-            img.src = `${prefijo}${i}.jpg`; 
-            img.alt = `${prefijo} ${i}`;
+            // Aquí estaba el fallo de las comillas, ahora usa comillas normales fijas:
+            img.src = prefijo + i + '.jpg'; 
+            img.alt = prefijo + ' ' + i;
             
-            img.onerror = function() { card.style.display = 'none'; };
-            const p = document.createElement('p');
-            p.innerText = `Ref: ${prefijo.toUpperCase()}-${i}`;
+            img.onerror = function() { this.parentElement.style.display = 'none'; };
+            var p = document.createElement('p');
+            p.innerText = 'Ref: ' + prefijo.toUpperCase() + '-' + i;
             card.appendChild(img);
             card.appendChild(p);
             contenedor.appendChild(card);
@@ -147,7 +139,6 @@
     }
 
     window.onload = function() {
-        // CORREGIDO: Ahora busca "zapatos" con S en plural para enlazar con tu archivo zapatos1.jpg
         generarFotosLibro('grid-zapatos-1', 'zapatos', 1, 25);
         generarFotosLibro('grid-zapatos-2', 'zapatos', 26, 50);
         
@@ -156,87 +147,66 @@
         
         generarFotosLibro('grid-gym-1', 'gym', 1, 25);
         generarFotosLibro('grid-gym-2', 'gym', 26, 50);
-        
-        actualizarPestañasMenu();
     };
 
-    let currentSheet = 0; 
-    const totalSheets = 3; 
+    var currentSheet = 0; 
+    var totalSheets = 3; 
 
     function nextPage() {
         if (currentSheet < totalSheets) {
-            const sheet = document.getElementById(`page${currentSheet}`);
+            var sheet = document.getElementById('page' + currentSheet);
             sheet.classList.add('flipped');
             sheet.classList.remove('active-z');
             sheet.classList.add('low-z');
             
             currentSheet++;
-            const nextSheet = document.getElementById(`page${currentSheet}`);
+            var nextSheet = document.getElementById('page' + currentSheet);
             if (nextSheet) nextSheet.classList.add('active-z');
-            
             actualizarPestañasMenu();
         }
     }
 
     function prevPage() {
         if (currentSheet > 0) {
-            const oldSheet = document.getElementById(`page${currentSheet}`);
+            var oldSheet = document.getElementById('page' + currentSheet);
             if (oldSheet) oldSheet.classList.remove('active-z');
             
             currentSheet--;
-            const sheet = document.getElementById(`page${currentSheet}`);
+            var sheet = document.getElementById('page' + currentSheet);
             sheet.classList.remove('flipped');
             sheet.classList.remove('low-z');
             sheet.classList.add('active-z');
-            
             actualizarPestañasMenu();
         }
     }
 
     function irASeccion(hojaDestino, idTab) {
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(`tab-${idTab}`).classList.add('active');
-
         while (currentSheet < hojaDestino) {
-            const sheet = document.getElementById(`page${currentSheet}`);
+            var sheet = document.getElementById('page' + currentSheet);
             sheet.classList.add('flipped');
             sheet.classList.remove('active-z');
             sheet.classList.add('low-z');
             currentSheet++;
         }
-        
         while (currentSheet > hojaDestino) {
-            const oldSheet = document.getElementById(`page${currentSheet}`);
+            var oldSheet = document.getElementById('page' + currentSheet);
             if (oldSheet) oldSheet.classList.remove('active-z');
             currentSheet--;
-            const sheet = document.getElementById(`page${currentSheet}`);
+            var sheet = document.getElementById('page' + currentSheet);
             sheet.classList.remove('flipped');
             sheet.classList.remove('low-z');
         }
-
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active-z'));
-        document.getElementById(`page${currentSheet}`).classList.add('active-z');
+        document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active-z'); });
+        document.getElementById('page' + currentSheet).classList.add('active-z');
+        actualizarPestañasMenu();
     }
 
     function actualizarPestañasMenu() {
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(function(tab) { tab.classList.remove('active'); });
         if (currentSheet === 0) document.getElementById('tab-inicio').classList.add('active');
         if (currentSheet === 1) document.getElementById('tab-zapatos').classList.add('active');
         if (currentSheet === 2) document.getElementById('tab-conjuntos').classList.add('active');
         if (currentSheet === 3) document.getElementById('tab-gym').classList.add('active');
-    }
-
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const book = document.querySelector('.book-container');
-    book.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX );
-    book.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
-    function handleSwipe() {
-        if (touchStartX - touchEndX > 50) nextPage(); 
-        if (touchEndX - touchStartX > 50) prevPage();
     }
 </script>
 
